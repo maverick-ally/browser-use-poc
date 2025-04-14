@@ -135,7 +135,8 @@ async def property_destination():
                     if await input_field.is_visible():
                         await input_field.clear()
                         await input_field.fill(value)
-                        await input_field.press("Enter")
+                        # await input_field.press("Enter")
+                        await input_field.press("Tab")
                         print(f"Entered {value} for '{service_name}'")
                         break
 
