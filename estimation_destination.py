@@ -1,9 +1,9 @@
 import os
 import asyncio
-import logging
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from pathlib import Path
 
 from browser_use import Agent, Controller
 from browser_use.agent.views import ActionResult
@@ -24,6 +24,15 @@ browser = Browser(
 browser_context = BrowserContext(browser=browser)
 
 controller = Controller()
+
+file_name = "aspire_upload_sample.xlsx"
+base_dir = Path(__file__).resolve().parent
+
+# Recursively find the file
+file_path = next(base_dir.rglob(file_name), None)
+
+available_file_paths = [str(file_path)]
+print(available_file_paths)
 
 # variables
 aspire_login_url = os.getenv('ASPIRE_LOGIN_URL')
@@ -79,10 +88,6 @@ async def main():
             3. Use selector 'input[type="file"]' to upload the file.
             4. Click on the Import button and wait for 10 seconds.
         """
-
-        available_file_paths = [
-            '/Users/utkarshsharmagmail.com/Documents/projects/siterecon_browseruse/aspire_upload_sample.xlsx'
-        ]
 
         model = ChatOpenAI(model='gpt-4o')
         agent = Agent(
