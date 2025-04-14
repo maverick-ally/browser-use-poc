@@ -16,7 +16,7 @@ load_dotenv()
 # Initialize controller and browser
 browser = Browser(
     config=BrowserConfig(
-        headless=False,
+        headless=True,
         disable_security=True,
     )
 )
