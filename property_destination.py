@@ -42,11 +42,11 @@ aspire_login_password = os.getenv('ASPIRE_LOGIN_PASSWORD')
 aspire_login_pin = os.getenv('ASPIRE_LOGIN_PIN')
 aspire_login_device_name = os.getenv('ASPIRE_LOGIN_DEVICE_NAME')
 aspire_property_id = os.getenv('ASPIRE_PROPERTY_ID')
-aspire_property_base_url = os.getenv
+aspire_property_base_url = os.getenv('ASPIRE_PROPERTY_BASE_URL')
 
 # Configure browser
 config = BrowserConfig(
-    headless=True,
+    headless=False,
     disable_security=True,
 )
 
@@ -63,8 +63,7 @@ initial_actions_for_property_destination = [
     {"input_text": {"index": 4, "text": "{aspire_login_device_name}".format(aspire_login_device_name=aspire_login_device_name)}},
     {"click_element": {"index": 6}},
     {"wait": {"seconds": 5}},
-    {"go_to_url": {"url": "{aspire_property_base_url}/{aspire_property_id}"
-                .format(aspire_property_base_url=aspire_property_base_url, aspire_property_id=aspire_property_id)}},
+    {"go_to_url": {"url": "{aspire_property_base_url}/{aspire_property_id}".format(aspire_property_base_url=aspire_property_base_url, aspire_property_id=aspire_property_id)}},
     {"wait": {"seconds": 20}},
     {"click_element": {"index": 21}},
     {"wait": {"seconds": 5}},
