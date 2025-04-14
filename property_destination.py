@@ -145,36 +145,36 @@ async def property_destination():
             await save_button.click()
             slack.sendMessageToChannel('Data filled: Takeoff data with measurement values are filled')
 
-            # === Send Summary ===
-            takeoff_data_df = pd.read_csv("takeoff_data.csv")
-            takeoff_service_items_df = pd.read_csv("takeoff_service_items.csv")
+            # # === Send Summary ===
+            # takeoff_data_df = pd.read_csv("takeoff_data.csv")
+            # takeoff_service_items_df = pd.read_csv("takeoff_service_items.csv")
 
-            service_items_set = set(takeoff_service_items_df["serviceItemType"])
-            takeoff_data_set = set(takeoff_data_df["serviceItemType"])
+            # service_items_set = set(takeoff_service_items_df["serviceItemType"])
+            # takeoff_data_set = set(takeoff_data_df["serviceItemType"])
 
-            only_in_takeoff_data = takeoff_data_set - service_items_set
-            only_in_service_items = service_items_set - takeoff_data_set
-            in_both = service_items_set & takeoff_data_set
+            # only_in_takeoff_data = takeoff_data_set - service_items_set
+            # only_in_service_items = service_items_set - takeoff_data_set
+            # in_both = service_items_set & takeoff_data_set
 
-            takeoff_data_dict = dict(zip(takeoff_data_df["serviceItemType"], takeoff_data_df["value"]))
-            both_items_with_values = [f"{item}: {takeoff_data_dict[item]}" for item in in_both]
+            # takeoff_data_dict = dict(zip(takeoff_data_df["serviceItemType"], takeoff_data_df["value"]))
+            # both_items_with_values = [f"{item}: {takeoff_data_dict[item]}" for item in in_both]
 
-            def format_list(items):
-                return "\n".join(items) if items else "None"
+            # def format_list(items):
+            #     return "\n".join(items) if items else "None"
 
-            message = f"""
-                🚀 Takeoff Data Upload Summary 🚀
+            # message = f"""
+            #     🚀 Takeoff Data Upload Summary 🚀
 
-                1️⃣ ServiceItems present in takeoff_data.csv but NOT in takeoff_service_items.csv:
-                {format_list(only_in_takeoff_data)}
+            #     1️⃣ ServiceItems present in takeoff_data.csv but NOT in takeoff_service_items.csv:
+            #     {format_list(only_in_takeoff_data)}
 
-                2️⃣ ServiceItems that are not updated:
-                {format_list(only_in_service_items)}
+            #     2️⃣ ServiceItems that are not updated:
+            #     {format_list(only_in_service_items)}
 
-                3️⃣ ServiceItems that are updated with values:
-                {format_list(both_items_with_values)}
-            """
-            slack.sendMessageToChannel(message)
+            #     3️⃣ ServiceItems that are updated with values:
+            #     {format_list(both_items_with_values)}
+            # """
+            # slack.sendMessageToChannel(message)
 
     except Exception as e:
         print(f"❌ Error occurred: {e}")
