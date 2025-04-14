@@ -25,7 +25,7 @@ browser_context = BrowserContext(browser=browser)
 
 controller = Controller()
 
-file_name = "aspire_upload_sample.xlsx"
+file_name = "aspire_upload_example.xlsx"
 base_dir = Path(__file__).resolve().parent
 
 # Recursively find the file
