@@ -143,6 +143,7 @@ async def property_destination():
 
             save_button = page.locator("button.p-button-success:has-text('Save'):not([disabled])")
             await save_button.click()
+            await page.wait_for_timeout(3000)
             slack.sendMessageToChannel('Data filled: Takeoff data with measurement values are filled')
 
             # # === Send Summary ===
