@@ -46,7 +46,7 @@ aspire_property_base_url = os.getenv('ASPIRE_PROPERTY_BASE_URL')
 
 # Configure browser
 config = BrowserConfig(
-    headless=False,
+    headless=True,
     disable_security=True,
 )
 
