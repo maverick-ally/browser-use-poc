@@ -9,6 +9,8 @@ from browser_use import Agent, Controller
 from browser_use.agent.views import ActionResult
 from browser_use.browser.browser import Browser, BrowserConfig
 from browser_use.browser.context import BrowserContext
+from portkey_ai import createHeaders, PORTKEY_GATEWAY_URL
+from slack import Slack
 
 # Load environment variables
 load_dotenv()
@@ -21,9 +23,24 @@ browser = Browser(
     )
 )
 
+s = Slack()
+
 browser_context = BrowserContext(browser=browser)
 
 controller = Controller()
+
+# Load Portkey headers for LLM
+portkey_headers = createHeaders(
+    api_key=os.getenv('PORT_KEY_API'),
+    virtual_key=os.getenv('PORT_KEY_VIRTUAL_KEY')
+)
+
+llm = ChatOpenAI(
+    model=os.getenv('OPENAI_LLM_MODEL'),
+    api_key="",
+    base_url=PORTKEY_GATEWAY_URL,
+    default_headers=portkey_headers
+)
 
 file_name = "aspire_upload_example.xlsx"
 base_dir = Path(__file__).resolve().parent
@@ -92,7 +109,7 @@ async def main():
         model = ChatOpenAI(model='gpt-4o')
         agent = Agent(
             task=task,
-            llm=model,
+            llm=llm,
             controller=controller,
             browser=browser,
             browser_context=browser_context,
@@ -100,7 +117,9 @@ async def main():
             initial_actions=initial_actions_for_estimation_destination,
         )
 
+        s.sendMessageToChannel("Preparing the excel file for estimation destination.")
         await agent.run()
+        s.sendMessageToChannel("File has been uploaded successfully.")
     
     except Exception as e:
         print(f"❌ Error occurred: {e}")
