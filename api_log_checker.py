@@ -111,7 +111,7 @@ async def property_destination():
 
             # Create and run Agent with this browser + context
             agent = Agent(
-                task="Extract and fill takeoff data",
+                task="wait for 10 seconds only.",
                 llm=llm,
                 save_conversation_path=f"logs/property_destination/{folder_name}/conversation",
                 use_vision=False,
