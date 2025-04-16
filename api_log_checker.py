@@ -63,7 +63,7 @@ async def log_request_headers(request):
             f.write("Headers:\n")
             for k, v in request.headers.items():
                 f.write(f"  {k}: {v}\n")
-            if request.method in ["POST", "PUT", "PATCH"]:
+            if request.method in ["POST", "PUT", "PATCH", "GET"]:
                 try:
                     post_data = request.post_data
                     if post_data:
