@@ -65,11 +65,11 @@ initial_actions_for_property_destination = [
     {"wait": {"seconds": 5}},
     {"go_to_url": {"url": "{aspire_property_base_url}/{aspire_property_id}".format(aspire_property_base_url=aspire_property_base_url, aspire_property_id=aspire_property_id)}},
     {"wait": {"seconds": 20}},
-    {"click_element": {"index": 21}},
+    {"click_element": {"index": 21}}, # click on the ellipsis button
     {"wait": {"seconds": 5}},
-    {"click_element": {"index": 72}},
-    {"wait": {"seconds": 5}},
-    {"click_element": {"index": 10}},
+    {"click_element": {"index": 77}}, # click on the "Takeoff" button
+    {"wait": {"seconds": 10}},
+    {"click_element": {"index": 4}}, # click on the collapse button
     {"wait": {"seconds": 5}},
 ]
 
@@ -91,33 +91,33 @@ async def property_destination():
             page = await browser_context.get_current_page()
 
             # === Extract Service Items ===
-            slack.sendMessageToChannel('Extracting: Takeoff data with Service Items and Measurements')
+            # slack.sendMessageToChannel('Extracting: Takeoff data with Service Items and Measurements')
 
-            rows = await page.locator("tr.ng-star-inserted").all()
-            data = []
-            current_parent = None
+            # rows = await page.locator("tr.ng-star-inserted").all()
+            # data = []
+            # current_parent = None
 
-            for row in rows:
-                cells = row.locator("td")
-                service_item = (await cells.nth(0).text_content() or "").strip()
-                measurement = (await cells.nth(1).text_content() or "").strip()
+            # for row in rows:
+            #     cells = row.locator("td")
+            #     service_item = (await cells.nth(0).text_content() or "").strip()
+            #     measurement = (await cells.nth(1).text_content() or "").strip()
 
-                toggler_btn = row.locator('button.p-treetable-toggler')
-                style = await toggler_btn.get_attribute("style") if await toggler_btn.count() > 0 else ""
+            #     toggler_btn = row.locator('button.p-treetable-toggler')
+            #     style = await toggler_btn.get_attribute("style") if await toggler_btn.count() > 0 else ""
 
-                if "margin-left: 0px" in style:
-                    current_parent = service_item
-                elif "margin-left:" in style and current_parent:
-                    data.append({
-                        "serviceType": current_parent,
-                        "serviceItemType": service_item,
-                        "measurement": measurement
-                    })
+            #     if "margin-left: 0px" in style:
+            #         current_parent = service_item
+            #     elif "margin-left:" in style and current_parent:
+            #         data.append({
+            #             "serviceType": current_parent,
+            #             "serviceItemType": service_item,
+            #             "measurement": measurement
+            #         })
 
-            df = pd.DataFrame(data)
-            df.to_csv("takeoff_service_items.csv", index=False)
-            print("✅ Data saved to takeoff_service_items.csv")
-            slack.sendMessageToChannel('Extracted: Takeoff data with Service Items and Measurements')
+            # df = pd.DataFrame(data)
+            # df.to_csv("takeoff_service_items.csv", index=False)
+            # print("✅ Data saved to takeoff_service_items.csv")
+            # slack.sendMessageToChannel('Extracted: Takeoff data with Service Items and Measurements')
 
             # === Fill Data ===
             df = pd.read_csv('takeoff_data.csv')
