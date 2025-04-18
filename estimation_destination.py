@@ -21,9 +21,11 @@ load_dotenv()
 s = Slack()
 
 # Timestamp and folder for logs
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-folder_name = f"logs-{timestamp}"
-log_file = f"api_logs_{timestamp}.txt"
+timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+llm_conversation_folder_name = f"logs-{timestamp}"
+log_folder = os.path.join("logs", "api_logs", "estimation_destination")
+os.makedirs(log_folder, exist_ok=True)  # Ensure the directory exists
+log_file = os.path.join(log_folder, f"api_logs_{timestamp}.txt")
 
 # Load Portkey headers for LLM
 portkey_headers = createHeaders(
@@ -200,6 +202,7 @@ async def estimation_destination():
                 llm=llm,
                 controller=controller,
                 browser=browser,
+                save_conversation_path=f"logs/llm_coversation/estimation_destination/{llm_conversation_folder_name}/conversation",
                 browser_context=browser_context,
                 available_file_paths=available_file_paths,
                 initial_actions=initial_actions_for_estimation_destination,

@@ -19,9 +19,11 @@ load_dotenv()
 slack = Slack()
 
 # Timestamp and folder for logs
-timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-folder_name = f"logs-{timestamp}"
-log_file = f"api_logs_{timestamp}.txt"
+timestamp = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+llm_conversation_folder_name = f"logs-{timestamp}"
+log_folder = os.path.join("logs", "api_logs", "property_destination")
+os.makedirs(log_folder, exist_ok=True)  # Ensure the directory exists
+log_file = os.path.join(log_folder, f"api_logs_{timestamp}.txt")
 
 # Load Portkey headers for LLM
 portkey_headers = createHeaders(
@@ -163,7 +165,7 @@ async def property_destination():
             agent = Agent(
                 task="wait for 10 seconds only.",
                 llm=llm,
-                save_conversation_path=f"logs/property_destination/{folder_name}/conversation",
+                save_conversation_path=f"logs/llm_coversation/property_destination/{llm_conversation_folder_name}/conversation",
                 use_vision=False,
                 initial_actions=initial_actions_for_property_destination,
                 browser=browser,
